@@ -1,3 +1,5 @@
+#!/bin/usr/env python3
+
 import tkinter
 from tkinter.messagebox import showinfo
 
@@ -60,7 +62,6 @@ class Janela(tkinter.Frame):
 
     def clickBotaoSair(self):
         root.destroy()
-        exit()
 
     def clickBotaoProximo(self):
         tarefa = str( self.textoTarefa.get() )
