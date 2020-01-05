@@ -2,6 +2,7 @@
 
 import tkinter
 from tkinter.messagebox import showinfo
+from tkinter.ttk import Combobox
 
 """
 AXIS padrão é 100, para deslocar para cima, substraia um valor e 
@@ -14,6 +15,8 @@ AXIS = 100
 AYIS = 100
 
 class Janela(tkinter.Frame):
+    
+    opcoesComboBox = list( range(1,6) )
 
     def __init__(self, master = None):
         tkinter.Frame.__init__(self, master)
@@ -133,5 +136,5 @@ resultList = list()
 root = tkinter.Tk()
 app = Janela(root)
 root.wm_title("Matriz G.U.T.")
-root.geometry("320x200")
+root.geometry("290x200")
 root.mainloop()
