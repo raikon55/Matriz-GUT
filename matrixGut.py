@@ -4,18 +4,17 @@ import tkinter
 from tkinter.messagebox import showinfo
 from tkinter.ttk import Combobox
 
-"""
-AXIS padrão é 100, para deslocar para cima, substraia um valor e 
-para baixo, adicione um valor.
-
-Deslocar o AYIS para esquerda, substraia, e adicione para deslocar
-para direita
-"""
-AXIS = 100
-AYIS = 100
-
 class Janela(tkinter.Frame):
-    
+    """
+    AXIS padrão é 100, para deslocar para cima, substraia um valor e 
+    para baixo, adicione um valor.
+
+    Deslocar o AYIS para esquerda, substraia, e adicione para deslocar
+    para direita
+    """
+    AXIS = 100
+    AYIS = 100
+
     opcoesComboBox = list( range(1,6) )
 
     def __init__(self, master = None):
@@ -28,66 +27,76 @@ class Janela(tkinter.Frame):
         botaoProximo = tkinter.Button(self, text="Proximo", command=self.clickBotaoProximo)
 
         self.setLabels()
-        self.setCampoTexto()
+        self.setCampos()
 
-        botaoSalvar.place(x=AXIS-50, y=AYIS+66)
-        botaoProximo.place(x=AXIS+20, y=AYIS+66)
-        botaoSair.place(x=AXIS+95, y=AYIS+66)
+        botaoSalvar.place(x=self.AXIS-50, y=self.AYIS+66)
+        botaoProximo.place(x=self.AXIS+20, y=self.AYIS+66)
+        botaoSair.place(x=self.AXIS+95, y=self.AYIS+66)
 
-    def setCampoTexto(self):
+    def setCampos(self):
+        """
+        Desenha os campos de entrada no Frame, e configura os 'comboboxes'(?)
+        tornando-os apenas como leitura
+        """
         self.textoTarefa = tkinter.Entry(self)
-        self.textoTarefa.place(x=AXIS+10, y=AYIS-60)
+        self.textoTarefa.place(x=self.AXIS+10, y=self.AYIS-60)
 
-        self.textoGravidade = tkinter.Entry(self)
-        self.textoGravidade.place(x=AXIS+10, y=AYIS-40)
+        self.comboGravidade = Combobox(self, values=self.opcoesComboBox, state='readonly')
+        self.comboGravidade.place(x=self.AXIS+10, y=self.AYIS-40)
+        self.comboGravidade.current(0)
 
-        self.textoUrgencia = tkinter.Entry(self)
-        self.textoUrgencia.place(x=AXIS+10, y=AYIS-20)
+        self.comboUrgencia = Combobox(self, values=self.opcoesComboBox, state='readonly')
+        self.comboUrgencia.place(x=self.AXIS+10, y=self.AYIS-20)
+        self.comboUrgencia.current(0)
 
-        self.textoTendencia = tkinter.Entry(self)
-        self.textoTendencia.place(x=AXIS+10, y=AYIS)
+        self.comboTendencia = Combobox(self, values=self.opcoesComboBox, state='readonly')
+        self.comboTendencia.place(x=self.AXIS+10, y=self.AYIS)
+        self.comboTendencia.current(0)
 
     def setLabels(self):
-        self.labelTendencia = tkinter.Label(self, text="Insira a tarefa que se deseja\ncalcular o G.U.T.")
-        self.labelTendencia.place(x=AXIS-50, y=AYIS-100)
+        """
+        Posiciona os labels no Frame
+        """
+        self.labelTendencia = tkinter.Label(self, 
+            text="Insira a tarefa que se deseja\ncalcular o G.U.T.")
+        self.labelTendencia.place(x=self.AXIS-50, y=self.AYIS-100)
 
         self.labelTarefa = tkinter.Label(self, text="Tarefa")
-        self.labelTarefa.place(x=AXIS-55, y=AYIS-60)
+        self.labelTarefa.place(x=self.AXIS-55, y=self.AYIS-60)
 
         self.labelGravidade = tkinter.Label(self, text="Gravidade")
-        self.labelGravidade.place(x=AXIS-55, y=AYIS-40)
+        self.labelGravidade.place(x=self.AXIS-55, y=self.AYIS-40)
 
         self.labelUrgencia = tkinter.Label(self, text="Urgência")
-        self.labelUrgencia.place(x=AXIS-55, y=AYIS-20)
+        self.labelUrgencia.place(x=self.AXIS-55, y=self.AYIS-20)
 
         self.labelTendencia = tkinter.Label(self, text="Tendência")
-        self.labelTendencia.place(x=AXIS-55, y=AYIS)
+        self.labelTendencia.place(x=self.AXIS-55, y=self.AYIS)
 
     def clickBotaoSair(self):
         root.destroy()
 
     def clickBotaoProximo(self):
         tarefa = str( self.textoTarefa.get() )
-        gravidade = int( eval(self.textoGravidade.get()) )
-        urgencia = int( eval(self.textoUrgencia.get()) )
-        tendencia = int( eval(self.textoTendencia.get()) )
+        gravidade = int( eval(self.comboGravidade.get()) )
+        urgencia = int( eval(self.comboUrgencia.get()) )
+        tendencia = int( eval(self.comboTendencia.get()) )
 
         insercao(resultList, gut(tarefa, gravidade, urgencia, tendencia))
 
         labelSalvo = tkinter.Label(self, text=f"{len(resultList)} entrada(s) salva(s)!")
-        labelSalvo.place(x=AXIS, y=AYIS+20)
+        labelSalvo.place(x=self.AXIS, y=self.AYIS+20)
         
         self.textoTarefa.delete(0, "end")
-        self.textoGravidade.delete(0, "end")
-        self.textoUrgencia.delete(0, "end")
-        self.textoTendencia.delete(0, "end")
 
     def clickBotaoSalvar(self):
         tempList = list()
         with open('matrixGut.txt', 'w+') as file:
             for i in range( len(resultList) ):
-                file.write(f'Tarefa: {resultList[i][0]} -> peso: {resultList[i][1]}\n')
-                tempList.append(f"Tarefa: {resultList[i][0]} -> peso: {resultList[i][1]}\n")
+                file.write(f'Tarefa: {resultList[i][0]} -> \
+                    peso: {resultList[i][1]}\n')
+                tempList.append(f"Tarefa: {resultList[i][0]} -> \
+                    peso: {resultList[i][1]}\n")
         self.popUpTasks(tempList)
 
     def popUpTasks(self, taskList):
@@ -137,4 +146,6 @@ root = tkinter.Tk()
 app = Janela(root)
 root.wm_title("Matriz G.U.T.")
 root.geometry("290x200")
+root.iconphoto(False, 
+    tkinter.PhotoImage(file='/home/hitchhiker/Documentos/Teste/matrix_gut/matrix.png'))
 root.mainloop()
