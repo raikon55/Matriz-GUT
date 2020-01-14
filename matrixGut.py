@@ -140,12 +140,13 @@ def insercao(lista, novoItem):
         elif novoItem not in lista:
             lista.append(novoItem)
 
+
+
 resultList = list()
 
 root = tkinter.Tk()
 app = Janela(root)
 root.wm_title("Matriz G.U.T.")
 root.geometry("290x200")
-root.iconphoto(False, 
-    tkinter.PhotoImage(file='/home/hitchhiker/Documentos/Teste/matrix_gut/matrix.png'))
+root.iconphoto(False, tkinter.PhotoImage(file='matrix.png'))
 root.mainloop()
