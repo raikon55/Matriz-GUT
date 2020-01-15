@@ -1,5 +1,7 @@
 #!/bin/usr/env python3
 
+import sys
+import csv
 import tkinter
 from tkinter.messagebox import showinfo
 from tkinter.ttk import Combobox
@@ -74,7 +76,8 @@ class Janela(tkinter.Frame):
         self.labelTendencia.place(x=self.AXIS-55, y=self.AYIS)
 
     def clickBotaoSair(self):
-        root.destroy()
+        self.destroy()
+        sys.exit()
 
     def clickBotaoProximo(self):
         tarefa = str( self.textoTarefa.get() )
@@ -91,12 +94,14 @@ class Janela(tkinter.Frame):
 
     def clickBotaoSalvar(self):
         tempList = list()
-        with open('matrixGut.txt', 'w+') as file:
+        with open('matrixGut.csv', mode='w') as tasks:
+            file = csv.writer(tasks, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            file.writerow(["Tarefa", "Peso"])
+
             for i in range( len(resultList) ):
-                file.write(f'Tarefa: {resultList[i][0]} -> \
-                    peso: {resultList[i][1]}\n')
-                tempList.append(f"Tarefa: {resultList[i][0]} -> \
-                    peso: {resultList[i][1]}\n")
+                file.writerow(  [ resultList[i][0], resultList[i][1] ]  )
+                tempList.append(
+                    f"Tarefa: {resultList[i][0]} -> peso: {resultList[i][1]}")
         self.popUpTasks(tempList)
 
     def popUpTasks(self, taskList):
@@ -139,7 +144,6 @@ def insercao(lista, novoItem):
             lista.insert(i, novoItem)
         elif novoItem not in lista:
             lista.append(novoItem)
-
 
 
 resultList = list()
