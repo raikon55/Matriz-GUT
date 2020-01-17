@@ -19,7 +19,7 @@ class Janela(tkinter.Frame):
 
     opcoesComboBox = list( range(1,6) )
 
-    def __init__(self, master = None):
+    def __init__(self, master=None):
         tkinter.Frame.__init__(self, master)
         self.master = master
 
@@ -94,8 +94,8 @@ class Janela(tkinter.Frame):
 
     def clickBotaoSalvar(self):
         tempList = list()
-        with open('matrixGut.csv', mode='w') as tasks:
-            file = csv.writer(tasks, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        with open("matrixGut.csv", mode="w") as tasks:
+            file = csv.writer(tasks, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL)
             file.writerow(["Tarefa", "Peso"])
 
             for i in range( len(resultList) ):
@@ -106,6 +106,16 @@ class Janela(tkinter.Frame):
 
     def popUpTasks(self, taskList):
         showinfo("Resultado da matriz", "\n".join(taskList))
+
+    def carregarMatriz(self, arq):
+        if ".csv" not in arq:
+            showinfo("Extensão do arquivo errada")
+
+        with open(arq, mode="r") as tasks:
+            csvFile = csv.reader(tasks, delimiter=",")
+
+            for row in csvFile:
+                insercao(resultList, tuple(row[0], row[1]))
 
 
 def gut(label, gravidade, urgencia, tendencia):
