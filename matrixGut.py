@@ -27,13 +27,15 @@ class Janela(tkinter.Frame):
         botaoSair = tkinter.Button(self, text="Sair", command=self.clickBotaoSair)
         botaoSalvar = tkinter.Button(self, text="Salvar", command=self.clickBotaoSalvar)
         botaoProximo = tkinter.Button(self, text="Proximo", command=self.clickBotaoProximo)
+        botaoCarregar = tkinter.Button(self, text="Carregar", command=self.clickCarregarMatriz)
 
         self.setLabels()
         self.setCampos()
 
-        botaoSalvar.place(x=self.AXIS-50, y=self.AYIS+66)
-        botaoProximo.place(x=self.AXIS+20, y=self.AYIS+66)
-        botaoSair.place(x=self.AXIS+95, y=self.AYIS+66)
+        botaoSalvar.place(x=self.AXIS-20, y=self.AYIS+36)
+        botaoProximo.place(x=self.AXIS+45, y=self.AYIS+36)
+        botaoCarregar.place(x=self.AXIS-20, y=self.AYIS+66)
+        botaoSair.place(x=self.AXIS+55, y=self.AYIS+66)
 
     def setCampos(self):
         """
@@ -107,15 +109,13 @@ class Janela(tkinter.Frame):
     def popUpTasks(self, taskList):
         showinfo("Resultado da matriz", "\n".join(taskList))
 
-    def carregarMatriz(self, arq):
-        if ".csv" not in arq:
-            showinfo("Extensão do arquivo errada")
-
-        with open(arq, mode="r") as tasks:
+    def clickCarregarMatriz(self):
+        with open("matrixGut.csv", mode="r") as tasks:
             csvFile = csv.reader(tasks, delimiter=",")
 
             for row in csvFile:
-                insercao(resultList, tuple(row[0], row[1]))
+                if type(row[1]) == "int":
+                    insercao(resultList, (row[0], row[1]))
 
 
 def gut(label, gravidade, urgencia, tendencia):
