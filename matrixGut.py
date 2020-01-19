@@ -110,13 +110,36 @@ class Janela(tkinter.Frame):
         showinfo("Resultado da matriz", "\n".join(taskList))
 
     def clickCarregarMatriz(self):
-        with open("matrixGut.csv", mode="r") as tasks:
-            csvFile = csv.reader(tasks, delimiter=",")
+        self.arq=None
+        janelaCarregar = tkinter.Toplevel(self)
+        janelaCarregar.wm_title("Load...")
+        janelaCarregar.geometry("200x150")
 
-            for row in csvFile:
-                if type(row[1]) == "int":
-                    insercao(resultList, (row[0], row[1]))
+        tempLabel = tkinter.Label(janelaCarregar,
+                    text="Entre com a caminho\ndo arquivo '.csv'")
+        tempLabel.place(x=self.AXIS-50, y=self.AYIS-80)
 
+        tempEntry = tkinter.Entry(janelaCarregar)
+        tempEntry.place(x=self.AXIS-50, y=self.AYIS-40)
+
+        def carregarArq():
+            self.arq=str( tempEntry.get() )
+
+            with open(self.arq, mode="r") as tasks:
+                csvFile = csv.reader(tasks, delimiter=",")
+                cabecalho = True
+
+                for row in csvFile:
+                    if not cabecalho:
+                        insercao(  resultList, ( row[0], int(row[1]) )  )
+                    else:
+                        cabecalho = False
+
+            janelaCarregar.destroy()
+
+        tempBotao = tkinter.Button(janelaCarregar, text="Carregar",
+                command=carregarArq)
+        tempBotao.place(x=self.AXIS-50, y=self.AYIS-18)
 
 def gut(label, gravidade, urgencia, tendencia):
     """
@@ -155,11 +178,11 @@ def insercao(lista, novoItem):
         elif novoItem not in lista:
             lista.append(novoItem)
 
-
 resultList = list()
 
 root = tkinter.Tk()
 app = Janela(root)
+app.pack(side="top", fill="both", expand=True)
 root.wm_title("Matriz G.U.T.")
 root.geometry("290x200")
 root.iconphoto(False, tkinter.PhotoImage(file='matrix.png'))
