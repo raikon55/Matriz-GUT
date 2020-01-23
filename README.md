@@ -12,7 +12,7 @@ tomada de decisões etc. Esta ferramenta se chama Matriz GUT, sigla utilizada pa
 palavras Gravidade, Urgência e Tendência.[1](http://www.sobreadministracao.com/matriz-gut-guia-completo/)
 
 ### Funcionalidade do programa
-- [x] Permite listar e calcular o G.U.T. de    Qtodas as tarefas
-- [x] Cria um arquivo texto com a lista    Qcriada
-- [x] Exibe em um popup a lista criada
-- [x] Carregararquivo na matriz
+- [x] Permite listar e calcular o G.U.T. de todas as tarefas
+- [x] Cria um arquivo texto com a lista criada
+- [x] Exibe um popup com a lista criada
+- [x] Carregar arquivo na matriz

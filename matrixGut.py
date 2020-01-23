@@ -6,9 +6,10 @@ import tkinter
 from tkinter.messagebox import showinfo
 from tkinter.ttk import Combobox
 
+
 class Janela(tkinter.Frame):
     """
-    AXIS padrão é 100, para deslocar para cima, substraia um valor e 
+    AXIS padrão é 100, para deslocar para cima, substraia um valor e
     para baixo, adicione um valor.
 
     Deslocar o AYIS para esquerda, substraia, e adicione para deslocar
@@ -17,17 +18,21 @@ class Janela(tkinter.Frame):
     AXIS = 100
     AYIS = 100
 
-    opcoesComboBox = list( range(1,6) )
+    opcoesComboBox = list(range(1, 6))
 
     def __init__(self, master=None):
         tkinter.Frame.__init__(self, master)
         self.master = master
 
         self.pack(fill=tkinter.BOTH, expand=1)
-        botaoSair = tkinter.Button(self, text="Sair", command=self.clickBotaoSair)
-        botaoSalvar = tkinter.Button(self, text="Salvar", command=self.clickBotaoSalvar)
-        botaoProximo = tkinter.Button(self, text="Proximo", command=self.clickBotaoProximo)
-        botaoCarregar = tkinter.Button(self, text="Carregar", command=self.clickCarregarMatriz)
+        botaoSair = tkinter.Button(self, text="Sair",
+                                   command=self.clickBotaoSair)
+        botaoSalvar = tkinter.Button(self, text="Salvar",
+                                     command=self.clickBotaoSalvar)
+        botaoProximo = tkinter.Button(self, text="Proximo",
+                                      command=self.clickBotaoProximo)
+        botaoCarregar = tkinter.Button(self, text="Carregar",
+                                       command=self.clickCarregarMatriz)
 
         self.setLabels()
         self.setCampos()
@@ -45,15 +50,18 @@ class Janela(tkinter.Frame):
         self.textoTarefa = tkinter.Entry(self)
         self.textoTarefa.place(x=self.AXIS+10, y=self.AYIS-60)
 
-        self.comboGravidade = Combobox(self, values=self.opcoesComboBox, state='readonly')
+        self.comboGravidade = Combobox(self, values=self.opcoesComboBox,
+                                       state='readonly')
         self.comboGravidade.place(x=self.AXIS+10, y=self.AYIS-40)
         self.comboGravidade.current(0)
 
-        self.comboUrgencia = Combobox(self, values=self.opcoesComboBox, state='readonly')
+        self.comboUrgencia = Combobox(self, values=self.opcoesComboBox,
+                                      state='readonly')
         self.comboUrgencia.place(x=self.AXIS+10, y=self.AYIS-20)
         self.comboUrgencia.current(0)
 
-        self.comboTendencia = Combobox(self, values=self.opcoesComboBox, state='readonly')
+        self.comboTendencia = Combobox(self, values=self.opcoesComboBox,
+                                       state='readonly')
         self.comboTendencia.place(x=self.AXIS+10, y=self.AYIS)
         self.comboTendencia.current(0)
 
@@ -61,8 +69,8 @@ class Janela(tkinter.Frame):
         """
         Posiciona os labels no Frame
         """
-        self.labelTendencia = tkinter.Label(self, 
-            text="Insira a tarefa que se deseja\ncalcular o G.U.T.")
+        textFrame = "Insira a tarefa que se deseja\ncalcular o G.U.T."
+        self.labelTendencia = tkinter.Label(self, text=textFrame)
         self.labelTendencia.place(x=self.AXIS-50, y=self.AYIS-100)
 
         self.labelTarefa = tkinter.Label(self, text="Tarefa")
@@ -82,48 +90,50 @@ class Janela(tkinter.Frame):
         sys.exit()
 
     def clickBotaoProximo(self):
-        tarefa = str( self.textoTarefa.get() )
-        gravidade = int( eval(self.comboGravidade.get()) )
-        urgencia = int( eval(self.comboUrgencia.get()) )
-        tendencia = int( eval(self.comboTendencia.get()) )
+        tarefa = str(self.textoTarefa.get())
+        gravidade = int(eval(self.comboGravidade.get()))
+        urgencia = int(eval(self.comboUrgencia.get()))
+        tendencia = int(eval(self.comboTendencia.get()))
 
         insercao(resultList, gut(tarefa, gravidade, urgencia, tendencia))
 
-        labelSalvo = tkinter.Label(self, text=f"{len(resultList)} entrada(s) salva(s)!")
+        labelSalvo = tkinter.Label(self,
+                                   text=f"{len(resultList)} entrada(s) salva(s)!")
         labelSalvo.place(x=self.AXIS, y=self.AYIS+20)
-        
+
         self.textoTarefa.delete(0, "end")
 
     def clickBotaoSalvar(self):
-        tempList = list()
+        tempList = []
         with open("matrixGut.csv", mode="w") as tasks:
-            file = csv.writer(tasks, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            file = csv.writer(tasks, delimiter=",", quotechar='"',
+                              quoting=csv.QUOTE_MINIMAL)
             file.writerow(["Tarefa", "Peso"])
 
-            for i in range( len(resultList) ):
-                file.writerow(  [ resultList[i][0], resultList[i][1] ]  )
+            for i in range(len(resultList)):
+                file.writerow([resultList[i][0], resultList[i][1]])
                 tempList.append(
                     f"Tarefa: {resultList[i][0]} -> peso: {resultList[i][1]}")
         self.popUpTasks(tempList)
 
-    def popUpTasks(self, taskList):
+    def popUpTasks(self, taskList: list):
         showinfo("Resultado da matriz", "\n".join(taskList))
 
     def clickCarregarMatriz(self):
-        self.arq=None
+        self.arq = None
         janelaCarregar = tkinter.Toplevel(self)
         janelaCarregar.wm_title("Load...")
         janelaCarregar.geometry("200x150")
 
         tempLabel = tkinter.Label(janelaCarregar,
-                    text="Entre com a caminho\ndo arquivo '.csv'")
+                                  text="Entre com a caminho\ndo arquivo .csv")
         tempLabel.place(x=self.AXIS-50, y=self.AYIS-80)
 
         tempEntry = tkinter.Entry(janelaCarregar)
         tempEntry.place(x=self.AXIS-50, y=self.AYIS-40)
 
         def carregarArq():
-            self.arq=str( tempEntry.get() )
+            self.arq = str(tempEntry.get())
 
             with open(self.arq, mode="r") as tasks:
                 csvFile = csv.reader(tasks, delimiter=",")
@@ -131,17 +141,18 @@ class Janela(tkinter.Frame):
 
                 for row in csvFile:
                     if not cabecalho:
-                        insercao(  resultList, ( row[0], int(row[1]) )  )
+                        insercao(resultList, (row[0], int(row[1])))
                     else:
                         cabecalho = False
 
             janelaCarregar.destroy()
 
         tempBotao = tkinter.Button(janelaCarregar, text="Carregar",
-                command=carregarArq)
+                                   command=carregarArq)
         tempBotao.place(x=self.AXIS-50, y=self.AYIS-18)
 
-def gut(label, gravidade, urgencia, tendencia):
+
+def gut(label: str, gravidade: int, urgencia: int, tendencia: int) -> tuple:
     """
     Função para calcular G.U.T.
     Retorna uma tupla com o nome e o peso calculado
@@ -164,7 +175,8 @@ def gut(label, gravidade, urgencia, tendencia):
     resultado = gravidade * urgencia * tendencia
     return (label, resultado)
 
-def insercao(lista, novoItem):
+
+def insercao(lista: list, novoItem: tuple):
     """
     Insere em ordem decrescente em uma lista
     """
@@ -172,13 +184,14 @@ def insercao(lista, novoItem):
         lista.append(novoItem)
         return
 
-    for i in range( len(lista) ):
+    for i in range(len(lista)):
         if novoItem not in lista and novoItem[1] >= lista[i][1]:
             lista.insert(i, novoItem)
         elif novoItem not in lista:
             lista.append(novoItem)
 
-resultList = list()
+
+resultList = []
 
 root = tkinter.Tk()
 app = Janela(root)
